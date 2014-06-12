@@ -20,6 +20,9 @@ ifneq (,$(filter cortex-a15 krait denver,$(TARGET_$(combo_2nd_arch_prefix)CPU_VA
 	arch_variant_ldflags := \
 		-Wl,--no-fix-cortex-a8
 else
+ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a9)
+	arch_variant_cflags := -mcpu=cortex-a9
+else
 ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a8)
 	arch_variant_cflags := -mcpu=cortex-a8
 	arch_variant_ldflags := \
@@ -30,10 +33,23 @@ ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a7)
 	arch_variant_ldflags := \
 		-Wl,--no-fix-cortex-a8
 else
+ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a5)
+	arch_variant_cflags := -mcpu=cortex-a5
+else
+ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),krait)
+	arch_variant_cflags := -mcpu=cortex-a9
+else
+ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),scorpion)
+	arch_variant_cflags := -mcpu=cortex-a8
+else
 	arch_variant_cflags := -march=armv7-a
 	# Generic ARM might be a Cortex A8 -- better safe than sorry
 	arch_variant_ldflags := \
 		-Wl,--fix-cortex-a8
+endif
+endif
+endif
+endif
 endif
 endif
 endif
